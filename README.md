@@ -1,0 +1,1 @@
+# webdev-trends-bot
