@@ -1,6 +1,11 @@
 from trends_fetcher import get_trends
 from email_sender import send_email
 import os
+from dotenv import load_dotenv
+
+# Load .env variables locally
+load_dotenv()
+
 
 if __name__ == "__main__":
     trends = get_trends()

@@ -3,6 +3,11 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from dotenv import load_dotenv
+
+# Load .env variables locally
+load_dotenv()
+
 
 def send_email(trends, receiver_email):
     sender_email = os.getenv("EMAIL")
@@ -46,7 +51,14 @@ def send_email(trends, receiver_email):
     message.attach(MIMEText(html, "html"))
 
     # Send email securely
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message.as_string())
+    try:
+        # Use TLS (STARTTLS) instead of SSL
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.ehlo()  # Can be omitted, but safe
+            server.starttls(context=ssl.create_default_context())
+            server.ehlo()
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message.as_string())
+            print("✅ Email sent successfully using TLS")
+    except Exception as e:
+        print("❌ Error while sending email:", e)
