@@ -2,7 +2,7 @@ name: Daily Web Dev Trends
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # runs daily at 7am GMT
+    - cron: "0 5 * * *"   # runs daily at 5am GMT
   workflow_dispatch:       # allow manual trigger
 
 jobs:
